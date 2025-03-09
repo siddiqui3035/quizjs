@@ -1,40 +1,1042 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MCQ Quiz</title>
-    <!-- Google Font -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
-      rel="stylesheet"
-    />
-    <!-- Stylesheet -->
-    <link rel="stylesheet" href="style.css" />
+    <title>GlobalNews - Premium News Portal</title>
+    <style>
+      :root {
+        --primary-color: #0062cc;
+        --secondary-color: #4a90e2;
+        --background-color: #f4f7fa;
+        --card-color: #ffffff;
+        --text-color: #333333;
+        --text-secondary: #767676;
+        --border-color: #e0e0e0;
+        --header-bg: #ffffff;
+        --shadow: 0 4px 6px rgba(0, 0, 0, 0.08);
+        --transition: all 0.3s ease;
+      }
+
+      .dark-mode {
+        --primary-color: #4a90e2;
+        --secondary-color: #64b5f6;
+        --background-color: #121212;
+        --card-color: #1e1e1e;
+        --text-color: #e0e0e0;
+        --text-secondary: #a0a0a0;
+        --border-color: #2c2c2c;
+        --header-bg: #1a1a1a;
+        --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      body {
+        background-color: var(--background-color);
+        color: var(--text-color);
+        transition: var(--transition);
+      }
+
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background-color: var(--header-bg);
+        box-shadow: var(--shadow);
+        padding: 0.5rem 2rem;
+        transition: var(--transition);
+      }
+
+      .header-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--primary-color);
+      }
+
+      .logo span {
+        display: inline-block;
+        margin-left: 0.5rem;
+      }
+
+      nav ul {
+        display: flex;
+        list-style: none;
+      }
+
+      nav li {
+        margin-left: 1.5rem;
+      }
+
+      nav a {
+        text-decoration: none;
+        color: var(--text-color);
+        font-weight: 500;
+        transition: var(--transition);
+        padding: 0.5rem 0;
+        position: relative;
+      }
+
+      nav a:hover {
+        color: var(--primary-color);
+      }
+
+      nav a::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background-color: var(--primary-color);
+        transition: var(--transition);
+      }
+
+      nav a:hover::after {
+        width: 100%;
+      }
+
+      .search-container {
+        display: flex;
+        align-items: center;
+      }
+
+      .search-box {
+        display: flex;
+        align-items: center;
+        background-color: var(--background-color);
+        border-radius: 20px;
+        padding: 0.3rem 1rem;
+        margin-right: 1rem;
+        transition: var(--transition);
+      }
+
+      .search-box:focus-within {
+        box-shadow: 0 0 0 2px var(--primary-color);
+      }
+
+      .search-box input {
+        border: none;
+        outline: none;
+        background: none;
+        margin-left: 0.5rem;
+        color: var(--text-color);
+        width: 0;
+        transition: var(--transition);
+      }
+
+      .search-box:focus-within input,
+      .search-box.active input {
+        width: 180px;
+      }
+
+      .mode-toggle {
+        position: relative;
+        width: 44px;
+        height: 22px;
+        background-color: var(--text-secondary);
+        border-radius: 30px;
+        cursor: pointer;
+      }
+
+      .mode-toggle::before {
+        content: "";
+        position: absolute;
+        height: 18px;
+        width: 18px;
+        left: 2px;
+        bottom: 2px;
+        border-radius: 50%;
+        background-color: white;
+        transition: var(--transition);
+      }
+
+      .dark-mode .mode-toggle::before {
+        transform: translateX(22px);
+      }
+
+      .mobile-menu-btn {
+        display: none;
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: var(--text-color);
+        font-size: 1.5rem;
+      }
+
+      main {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 0 2rem;
+      }
+
+      .breaking-news {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.breaking-news-label {
+  font-weight: bold;
+  margin-right: 1rem;
+  white-space: nowrap;
+}
+
+      .news-carousel {
+        flex: 1;
+        position: relative;
+        height: 1.5rem;
+        overflow: hidden;
+      }
+
+      .news-carousel-item {
+        position: absolute;
+        width: 100%;
+        transition: transform 0.5s ease;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .hero-section {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 2rem;
+        margin-bottom: 2rem;
+      }
+
+      .featured-article {
+        background-color: var(--card-color);
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: var(--shadow);
+        transition: var(--transition);
+      }
+
+      .featured-article:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .featured-article img {
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+      }
+
+      .featured-content {
+        padding: 1.5rem;
+      }
+
+      .featured-content h2 {
+        margin-bottom: 1rem;
+        font-size: 1.8rem;
+      }
+
+      .featured-content p {
+        color: var(--text-secondary);
+        margin-bottom: 1rem;
+        line-height: 1.6;
+      }
+
+      .article-meta {
+        display: flex;
+        align-items: center;
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+      }
+
+      .article-meta span {
+        margin-right: 1rem;
+        display: flex;
+        align-items: center;
+      }
+
+      .article-meta i {
+        margin-right: 0.3rem;
+      }
+
+      .popular-news {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .popular-item {
+        background-color: var(--card-color);
+        border-radius: 8px;
+        padding: 1rem;
+        box-shadow: var(--shadow);
+        display: flex;
+        align-items: center;
+        transition: var(--transition);
+      }
+
+      .popular-item:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+      }
+
+      .popular-item img {
+        width: 80px;
+        height: 60px;
+        object-fit: cover;
+        border-radius: 4px;
+        margin-right: 1rem;
+      }
+
+      .popular-item-content h3 {
+        font-size: 1rem;
+        margin-bottom: 0.3rem;
+      }
+
+      .popular-item-content .article-meta {
+        font-size: 0.8rem;
+      }
+
+      .category-tabs {
+        display: flex;
+        background-color: var(--card-color);
+        border-radius: 8px;
+        margin-bottom: 2rem;
+        overflow-x: auto;
+        scrollbar-width: none;
+        box-shadow: var(--shadow);
+      }
+
+      .category-tabs::-webkit-scrollbar {
+        display: none;
+      }
+
+      .category-tab {
+        padding: 1rem 1.5rem;
+        font-weight: 500;
+        color: var(--text-secondary);
+        cursor: pointer;
+        transition: var(--transition);
+        border-bottom: 2px solid transparent;
+        white-space: nowrap;
+      }
+
+      .category-tab.active {
+        color: var(--primary-color);
+        border-bottom-color: var(--primary-color);
+      }
+
+      .news-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+        margin-bottom: 2rem;
+      }
+
+      .news-card {
+        background-color: var(--card-color);
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: var(--shadow);
+        transition: var(--transition);
+      }
+
+      .news-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .news-card img {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+      }
+
+      .news-card-content {
+        padding: 1.5rem;
+      }
+
+      .news-card-content h3 {
+        margin-bottom: 0.8rem;
+        font-size: 1.2rem;
+      }
+
+      .news-card-content p {
+        color: var(--text-secondary);
+        margin-bottom: 1rem;
+        line-height: 1.5;
+      }
+
+      .subscribe-section {
+        background-color: var(--primary-color);
+        padding: 3rem;
+        border-radius: 8px;
+        text-align: center;
+        color: white;
+        margin-bottom: 2rem;
+      }
+
+      .subscribe-section h2 {
+        margin-bottom: 1rem;
+        font-size: 2rem;
+      }
+
+      .subscribe-section p {
+        margin-bottom: 2rem;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .subscribe-form {
+        display: flex;
+        max-width: 500px;
+        margin: 0 auto;
+      }
+
+      .subscribe-form input {
+        flex: 1;
+        padding: 1rem;
+        border: none;
+        border-radius: 4px 0 0 4px;
+        outline: none;
+      }
+
+      .subscribe-form button {
+        background-color: #004d99;
+        color: white;
+        border: none;
+        padding: 0 1.5rem;
+        border-radius: 0 4px 4px 0;
+        cursor: pointer;
+        font-weight: 500;
+        transition: var(--transition);
+      }
+
+      .subscribe-form button:hover {
+        background-color: #003366;
+      }
+
+      footer {
+        background-color: var(--card-color);
+        padding: 3rem 2rem;
+        box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.05);
+      }
+
+      .footer-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 2rem;
+      }
+
+      .footer-section h3 {
+        margin-bottom: 1.5rem;
+        position: relative;
+        display: inline-block;
+      }
+
+      .footer-section h3::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: -5px;
+        width: 40px;
+        height: 2px;
+        background-color: var(--primary-color);
+      }
+
+      .footer-section p {
+        color: var(--text-secondary);
+        line-height: 1.6;
+        margin-bottom: 1rem;
+      }
+
+      .footer-links {
+        list-style: none;
+      }
+
+      .footer-links li {
+        margin-bottom: 0.8rem;
+      }
+
+      .footer-links a {
+        text-decoration: none;
+        color: var(--text-secondary);
+        transition: var(--transition);
+      }
+
+      .footer-links a:hover {
+        color: var(--primary-color);
+      }
+
+      .social-icons {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1.5rem;
+      }
+
+      .social-icons a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        background-color: var(--background-color);
+        border-radius: 50%;
+        color: var(--text-color);
+        transition: var(--transition);
+      }
+
+      .social-icons a:hover {
+        background-color: var(--primary-color);
+        color: white;
+        transform: translateY(-3px);
+      }
+
+      .copyright {
+        margin-top: 3rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--border-color);
+        text-align: center;
+        color: var(--text-secondary);
+      }
+
+      /* Responsive */
+      @media (max-width: 1024px) {
+        .news-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      @media (max-width: 768px) {
+        .hero-section {
+          grid-template-columns: 1fr;
+        }
+
+        .footer-container {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        nav ul {
+          position: fixed;
+          top: 70px;
+          left: 0;
+          width: 100%;
+          background-color: var(--card-color);
+          flex-direction: column;
+          padding: 1rem 2rem;
+          box-shadow: var(--shadow);
+          transform: translateY(-150%);
+          transition: var(--transition);
+          z-index: 99;
+        }
+
+        nav ul.active {
+          transform: translateY(0);
+        }
+
+        nav li {
+          margin: 1rem 0;
+        }
+
+        .mobile-menu-btn {
+          display: block;
+        }
+
+        .search-box {
+          display: none;
+        }
+      }
+
+      @media (max-width: 600px) {
+        .news-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .footer-container {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* Button styles */
+      .btn {
+        display: inline-block;
+        padding: 0.5rem 1.5rem;
+        background-color: var(--primary-color);
+        color: white;
+        text-decoration: none;
+        border-radius: 4px;
+        font-weight: 500;
+        transition: var(--transition);
+      }
+
+      .btn:hover {
+        background-color: var(--secondary-color);
+      }
+
+      /* Tag styles */
+      .tag {
+        display: inline-block;
+        padding: 0.2rem 0.8rem;
+        background-color: rgba(74, 144, 226, 0.1);
+        color: var(--primary-color);
+        border-radius: 20px;
+        font-size: 0.8rem;
+        margin-right: 0.5rem;
+        margin-bottom: 0.5rem;
+      }
+
+      /* Animation */
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .animate-fade-in-up {
+        animation: fadeInUp 0.5s ease forwards;
+      }
+    </style>
   </head>
   <body>
-    <div class="start-screen">
-      <button id="start-button">Start</button>
-    </div>
-    <div id="display-container">
-      <div class="header">
-        <div class="number-of-count">
-          <span class="number-of-question">1 of 5 questions</span>
+    <header>
+      <div class="header-container">
+        <div class="logo">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <path
+              d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"
+            ></path>
+          </svg>
+          <span>GlobalNews</span>
         </div>
-        <div class="timer-div">
-          <img src="time.png" />
-          <span class="time-left">10s</span>
+        <nav>
+          <button class="mobile-menu-btn">&#9776;</button>
+          <ul>
+            <li><a href="#" class="active">Home</a></li>
+            <li><a href="#">Politics</a></li>
+            <li><a href="#">Business</a></li>
+            <li><a href="#">Technology</a></li>
+            <li><a href="#">Entertainment</a></li>
+            <li><a href="#">Sports</a></li>
+          </ul>
+        </nav>
+        <div class="search-container">
+          <div class="search-box">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" placeholder="Search news..." />
+          </div>
+          <div class="mode-toggle" id="modeToggle"></div>
         </div>
       </div>
-      <div id="container">
-        <!-- questions and options will be displayed here -->
+    </header>
+
+    <main>
+      <div class="breaking-news">
+        <div class="breaking-news-label">BREAKING:</div>
+        <div class="news-carousel" id="breakingNewsCarousel">
+          <!-- Breaking news items will be dynamically inserted here -->
+        </div>
       </div>
-      <button id="next-button">Next</button>
-    </div>
-    <div class="score-container hide">
-      <div id="user-score">Demo Score</div>
-      <button id="restart">Restart</button>
-    </div>
-    <!-- Script -->
-    <script src="script.js"></script>
+
+      <section class="hero-section">
+        <article
+          class="featured-article animate-fade-in-up"
+          id="featuredArticle"
+        >
+          <!-- Featured article will be dynamically inserted here -->
+        </article>
+
+        <div class="popular-news" id="popularNews">
+          <!-- Popular news items will be dynamically inserted here -->
+        </div>
+      </section>
+
+      <div class="category-tabs">
+        <div class="category-tab active">Latest News</div>
+        <div class="category-tab">Politics</div>
+        <div class="category-tab">Business</div>
+        <div class="category-tab">Technology</div>
+        <div class="category-tab">Health</div>
+        <div class="category-tab">Entertainment</div>
+        <div class="category-tab">Sports</div>
+        <div class="category-tab">Environment</div>
+      </div>
+
+      <section class="news-grid" id="newsGrid">
+        <!-- News articles will be dynamically inserted here -->
+      </section>
+
+      <section class="subscribe-section">
+        <h2>Stay Updated with GlobalNews</h2>
+        <p>
+          Subscribe to our newsletter and never miss the latest news, analyses,
+          and special offers. Join thousands of informed readers today!
+        </p>
+        <form class="subscribe-form">
+          <input type="email" placeholder="Your email address" />
+          <button type="submit">Subscribe</button>
+        </form>
+      </section>
+    </main>
+
+    <footer>
+      <div class="footer-container">
+        <div class="footer-section">
+          <h3>About GlobalNews</h3>
+          <p>
+            GlobalNews is a premium news portal dedicated to delivering
+            accurate, timely, and insightful news from around the world. Our
+            team of experienced journalists works tirelessly to bring you the
+            most important stories.
+          </p>
+          <div class="social-icons">
+            <a href="#">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"
+                ></path>
+              </svg>
+            </a>
+            <a href="#">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"
+                ></path>
+              </svg>
+            </a>
+            <a href="#">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                <path
+                  d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"
+                ></path>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+              </svg>
+            </a>
+          </div>
+        </div>
+        <div class="footer-section">
+          <h3>Quick Links</h3>
+          <ul class="footer-links">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Politics</a></li>
+            <li><a href="#">Business</a></li>
+            <li><a href="#">Technology</a></li>
+            <li><a href="#">Entertainment</a></li>
+            <li><a href="#">Sports</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Legal</h3>
+          <ul class="footer-links">
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Service</a></li>
+            <li><a href="#">Cookie Policy</a></li>
+            <li><a href="#">Disclaimer</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Contact Us</h3>
+          <p>Email: info@globalnews.com</p>
+          <p>Phone: +1 (123) 456-7890</p>
+          <p>Address: 123 News Street, Media City, USA</p>
+        </div>
+      </div>
+      <div class="copyright">&copy; 2025 GlobalNews. All rights reserved.</div>
+    </footer>
+
+    <script>
+      // Dark Mode Toggle
+      const modeToggle = document.getElementById("modeToggle");
+      const body = document.body;
+
+      modeToggle.addEventListener("click", () => {
+        body.classList.toggle("dark-mode");
+      });
+
+      // Mobile Menu Toggle
+      const mobileMenuBtn = document.querySelector(".mobile-menu-btn");
+      const navUl = document.querySelector("nav ul");
+
+      mobileMenuBtn.addEventListener("click", () => {
+        navUl.classList.toggle("active");
+      });
+
+      // Search Box Toggle
+      const searchBox = document.querySelector(".search-box");
+      const searchInput = searchBox.querySelector("input");
+
+      searchBox.addEventListener("click", () => {
+        searchBox.classList.add("active");
+        searchInput.focus();
+      });
+
+      document.addEventListener("click", (e) => {
+        if (!searchBox.contains(e.target)) {
+          searchBox.classList.remove("active");
+        }
+      });
+
+      // News Carousel
+      const newsCarousel = document.querySelector(".news-carousel");
+      const newsItems = document.querySelectorAll(".news-carousel-item");
+      let currentIndex = 0;
+
+      setInterval(() => {
+        currentIndex = (currentIndex + 1) % newsItems.length;
+        newsCarousel.style.transform = `translateY(-${currentIndex * 100}%)`;
+      }, 5000);
+    </script>
+
+    <script>
+      const apiKey = "pub_73730b757d04d1b85b2473dfe9d4b45710221";
+      const apiUrl = `https://newsdata.io/api/1/sources?country=bd&apikey=${apiKey}`;
+
+      // Fallback data in case the API fails or returns no results
+      const fallbackData = [
+        {
+          id: "fallback-source-1",
+          name: "Fallback Source 1",
+          url: "https://example.com",
+          icon: "/api/placeholder/100/100",
+          description: "This is a fallback news source.",
+          category: ["General"],
+          language: ["english"],
+          country: ["US"],
+        },
+        {
+          id: "fallback-source-2",
+          name: "Fallback Source 2",
+          url: "https://example.com",
+          icon: "/api/placeholder/100/100",
+          description: "This is another fallback news source.",
+          category: ["General"],
+          language: ["english"],
+          country: ["US"],
+        },
+      ];
+
+      // Fetch news sources from the API
+      async function fetchNews() {
+        try {
+          const response = await fetch(apiUrl);
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          const data = await response.json();
+          console.log("API Response:", data); // Log the full response for debugging
+
+          // Check if the API returned valid results
+          if (!data.results || data.results.length === 0) {
+            throw new Error("No results found in the API response");
+          }
+
+          // Render the news sources
+          renderNews(data.results);
+        } catch (error) {
+          console.error("Error fetching news sources:", error);
+          console.log("Using fallback data...");
+          renderNews(fallbackData); // Use fallback data if the API fails
+        }
+      }
+
+      // Render news sources
+      function renderNews(sources) {
+        const breakingNewsCarousel = document.getElementById(
+          "breakingNewsCarousel"
+        );
+        const featuredArticle = document.getElementById("featuredArticle");
+        const popularNews = document.getElementById("popularNews");
+        const newsGrid = document.getElementById("newsGrid");
+
+        // Clear existing content
+        breakingNewsCarousel.innerHTML = "";
+        featuredArticle.innerHTML = "";
+        popularNews.innerHTML = "";
+        newsGrid.innerHTML = "";
+
+        // Render breaking news (using source names)
+        sources.slice(0, 3).forEach((source, index) => {
+          const newsItem = document.createElement("div");
+          newsItem.className = "news-carousel-item";
+          newsItem.style.transform = `translateY(${index * 100}%)`;
+          newsItem.textContent = source.name || "No source name available";
+          breakingNewsCarousel.appendChild(newsItem);
+        });
+
+        // Render featured source
+        const featured = sources[0];
+        featuredArticle.innerHTML = `
+      <img src="${featured.icon || "/api/placeholder/800/400"}" alt="${
+          featured.name || "No source name available"
+        }">
+      <div class="featured-content">
+          <span class="tag">${
+            featured.category ? featured.category[0] : "General"
+          }</span>
+          <h2>${featured.name || "No source name available"}</h2>
+          <p>${featured.description || "No description available."}</p>
+          <div class="article-meta">
+              <span>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <polyline points="12 6 12 12 16 14"></polyline>
+                  </svg>
+                  ${
+                    featured.language
+                      ? featured.language[0]
+                      : "No language available"
+                  }
+              </span>
+              <span>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+                  </svg>
+                  ${
+                    featured.country
+                      ? featured.country[0]
+                      : "No country available"
+                  }
+              </span>
+          </div>
+      </div>
+    `;
+
+        // Render popular sources
+        sources.slice(1, 4).forEach((source, index) => {
+          const popularItem = document.createElement("div");
+          popularItem.className = "popular-item animate-fade-in-up";
+          popularItem.style.animationDelay = `${0.1 * (index + 1)}s`;
+          popularItem.innerHTML = `
+          <img src="${source.icon || "/api/placeholder/160/120"}" alt="${
+            source.name || "No source name available"
+          }">
+          <div class="popular-item-content">
+              <h3>${source.name || "No source name available"}</h3>
+              <div class="article-meta">
+                  <span>${
+                    source.language
+                      ? source.language[0]
+                      : "No language available"
+                  }</span>
+              </div>
+          </div>
+      `;
+          popularNews.appendChild(popularItem);
+        });
+
+        // Render news grid (sources)
+        sources.slice(4).forEach((source, index) => {
+          const newsCard = document.createElement("article");
+          newsCard.className = "news-card animate-fade-in-up";
+          newsCard.style.animationDelay = `${0.1 * (index + 1)}s`;
+          newsCard.innerHTML = `
+          <img src="${source.icon || "/api/placeholder/400/300"}" alt="${
+            source.name || "No source name available"
+          }">
+          <div class="news-card-content">
+              <span class="tag">${
+                source.category ? source.category[0] : "General"
+              }</span>
+              <h3>${source.name || "No source name available"}</h3>
+              <p>${source.description || "No description available."}</p>
+              <div class="article-meta">
+                  <span>${
+                    source.language
+                      ? source.language[0]
+                      : "No language available"
+                  }</span>
+                  <span>${
+                    source.country ? source.country[0] : "No country available"
+                  }</span>
+              </div>
+          </div>
+      `;
+          newsGrid.appendChild(newsCard);
+        });
+      }
+
+      // Initialize
+      fetchNews();
+    </script>
   </body>
 </html>
